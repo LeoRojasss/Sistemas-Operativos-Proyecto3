@@ -76,7 +76,8 @@ public class Minero extends AugmentedRobot implements Directions
 // Constructor for Minero class. Extends the AugmentedRobot and adds two parameters:
 // tipo: indicates if the robot is TIPO_EXTRACTOR, TIPO_MINERO
 // id  : number that unique identifies the robot. Don't use the RobotID attrib from Parent classes.
-	private static int nextRobotId = 0;
+
+	private static int nextRobotId = 0; // control de id
 // Creates Database
 class Database {
     private static final ConcurrentHashMap<Integer, RobotData> robots = new ConcurrentHashMap<>();
@@ -133,7 +134,7 @@ class Database {
 		this.id			= id;
 // Register the current position and locks it indicating that is occupied.
 		String posicion	= Integer.toString(calleActual) + " - " + Integer.toString(avenidaActual);
-		this.id = nextRobotId++; // Asigna el ID y luego incrementa el contador global.
+		this.id = nextRobotId++; // Asigna el ID y luego incrementa el contador global, esto tambien ayudara a verlo en consola
 		Database.updateRobotData(this.id, this.tipoRobot, this.avenidaActual, this.calleActual, true);  // Asegurar que se registre inicialmente
 		objPosiciones.ocuparPosicion(posicion);
 // Add robot thread to the World.
@@ -144,7 +145,7 @@ class Database {
 	public void run()
 	{
 		ejecutarMina();
-		Database.printAllData();  // Mover esta llamada aquí para asegurar que refleje los cambios después de la ejecución
+		Database.printAllData();  //asegurar que refleje los cambios después de la ejecución
 	}
 
 // Determine move direction on the Street
@@ -877,7 +878,6 @@ class Database {
 // Creates the number of robots defined and adds to the ArrayList and to the Threads
 		for(int i = AVENIDA_INICIAL; i < (AVENIDA_INICIAL + cantidad); i++)
 		{
-			
 			robot = new Minero(calle, i, North, 0, colorRobot, tipoRobot, i - AVENIDA_INICIAL);
 			Minero.objRobots.add(robot);
 			Minero.objThreads.add(new Thread(robot));
